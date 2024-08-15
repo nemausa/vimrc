@@ -60,13 +60,16 @@ autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab
 
 "LSP
 " 使用 tab 键进行补全
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+"inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " 使用 Enter 键选择补全项并插入到编辑器中
-inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<CR>"
-
+"inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<CR>"
+" 选择建议时使用 Tab 键
+inoremap <silent><expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+" 确定建议项时使用 Enter 键
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+"
 " 切换头文件和源文件
-map <leader>a :A<cr>
 imap jj <Esc>
 imap kk <Esc>
 " NERDTree配置
@@ -74,6 +77,15 @@ let mapleader=","
 map <leader>nn :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
+map <leader>z :A<cr>
+"in visual mode
+xnoremap <A-Up> :m '<-2<CR>gv=gv
+"normal mode
+nnoremap <A-Up> :m .-2<CR>==
+xnoremap <A-Down> :m '>+1<CR>gv=gv
+nnoremap <A-Down> :m .+1<CR>==
+"map <A-Up> :m-2<CR>
+"map <A-Down> :m+1<CR>
 ""修改树的显示图标
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
