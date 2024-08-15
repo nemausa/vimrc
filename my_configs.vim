@@ -84,6 +84,15 @@ xnoremap <A-Up> :m '<-2<CR>gv=gv
 nnoremap <A-Up> :m .-2<CR>==
 xnoremap <A-Down> :m '>+1<CR>gv=gv
 nnoremap <A-Down> :m .+1<CR>==
+" 复制到系统剪贴板
+noremap <leader>y "+y
+noremap <leader>Y "+yy
+vnoremap <leader>y "+y
+
+" 粘贴系统剪贴板内容
+noremap <leader>p "+p
+noremap <leader>P "+P
+
 "map <A-Up> :m-2<CR>
 "map <A-Down> :m+1<CR>
 ""修改树的显示图标
