@@ -16,6 +16,9 @@ filetype indent on
 set number
 set fileencodings=utf-8
 set guifont=Consolas:h14
+"set list
+set colorcolumn=80
+"set listchars=space:.,tab:>-
 
 "coc配置
 " 跳转到定义
@@ -94,8 +97,6 @@ let g:NERDCommenterCommentString = '// %s'
 
 " 对 C 和 C++ 文件使用 // 注释
 autocmd FileType c,cpp setlocal commentstring=//\ %s
-set list
-set colorcolumn=80
-"set listchars=space:.,tab:>-
 nnoremap <expr> l col('.') == col('$') - 1 ? '' : 'l'
 nnoremap <expr> h col('.') == 1 ? '' : 'h'
+let g:coc_preferences = {'triggerCompletionWait': 500}
