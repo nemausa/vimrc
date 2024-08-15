@@ -6,6 +6,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'vim-scripts/a.vim'
+"Plug 'mileszs/ack.vim'
 " 其他插件...
 call plug#end()
 
@@ -29,9 +30,9 @@ nnoremap <silent> gd <Plug>(coc-definition)
 " 跳转到声明
 nnoremap <silent> gD <Plug>(coc-declaration)
 " 跳转到类型定义
-nnoremap <silent> gt <Plug>(coc-type-definition)
+"nnoremap <silent> gt <Plug>(coc-type-definition)
 " 跳转到引用
-nnoremap <silent> gr <Plug>(coc-references)
+"nnoremap <silent> gr <Plug>(coc-references)
 
 " 设置触发键为 Tab
 let g:UltiSnipsExpandTrigger="<Tab>"
