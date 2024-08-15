@@ -18,6 +18,9 @@ set fileencodings=utf-8
 set guifont=Consolas:h14
 "set list
 set colorcolumn=80
+set mouse=
+:map <ScrollWheelUp> :echo "Scroll up disabled"<CR>
+:map <ScrollWheelDown> :echo "Scroll down disabled"<CR>
 "set listchars=space:.,tab:>-
 
 "coc配置
