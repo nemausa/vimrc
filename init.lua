@@ -49,21 +49,6 @@ vim.opt.mouse = ''            -- 关闭鼠标支持
 -- vim.opt.list = true         -- 如果需要显示不可见字符，可以取消注释
 -- vim.opt.listchars = {space = '.', tab = '>-'}
 
--- 键映射
-vim.api.nvim_set_keymap('n', '<ScrollWheelUp>', ':echo "Scroll up disabled"<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<ScrollWheelDown>', ':echo "Scroll down disabled"<CR>', { noremap = true, silent = true })
-
--- coc.nvim 配置
-vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'gD', '<Plug>(coc-declaration)', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', 'gt', '<Plug>(coc-type-definition)', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', 'gr', '<Plug>(coc-references)', { noremap = true, silent = true })
-
--- UltiSnips 配置
-vim.g.UltiSnipsExpandTrigger = '<Tab>'
-vim.g.UltiSnipsJumpForwardTrigger = '<Tab>'
-vim.g.UltiSnipsJumpBackwardTrigger = '<S-Tab>'
-
 -- 自动命令配置
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {"c", "cpp"},
@@ -80,33 +65,30 @@ vim.api.nvim_set_keymap('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<S-Tab>"', { 
 vim.api.nvim_set_keymap('i', '<CR>', 'pumvisible() ? coc#_select_confirm() : "<CR>"', { expr = true, noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<Tab>', 'coc#pum#visible() ? coc#pum#next(1) : "<Tab>"', { expr = true, noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', '<CR>', 'coc#pum#visible() ? coc#pum#confirm() : "<CR>"', { expr = true, noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gD', '<Plug>(coc-declaration)', { noremap = true, silent = true })
+-- UltiSnips 配置
+vim.g.UltiSnipsExpandTrigger = '<Tab>'
+vim.g.UltiSnipsJumpForwardTrigger = '<Tab>'
+vim.g.UltiSnipsJumpBackwardTrigger = '<S-Tab>'
 
 -- NERDTree 配置
 vim.g.mapleader = ','
-
 vim.api.nvim_set_keymap('n', '<leader>nn', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nb', ':NERDTreeFromBookmark<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nf', ':NERDTreeFind<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>z', ':A<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':copen<CR>', { noremap = true, silent = true })
--- Visual mode: move selected lines up
-vim.api.nvim_set_keymap('x', '<A-Up>', ":move '<-2<CR>gv=gv", { noremap = true, silent = true })
--- Normal mode: move the current line up
-vim.api.nvim_set_keymap('n', '<A-Up>', ":move .-2<CR>==", { noremap = true, silent = true })
--- Visual mode: move selected lines down
-vim.api.nvim_set_keymap('x', '<A-Down>', ":move '>+1<CR>gv=gv", { noremap = true, silent = true })
--- Normal mode: move the current line down
-vim.api.nvim_set_keymap('n', '<A-Down>', ":move .+1<CR>==", { noremap = true, silent = true })
-
-
--- NERDTree 其他设置
 vim.g.NERDTreeDirArrowExpandable = '+'
 vim.g.NERDTreeDirArrowCollapsible = '-'
 vim.g.NERDTreeWinPos = 'left'
 vim.g.NERDTreeSize = 30
 vim.g.NERDTreeShowLineNumbers = 1
 vim.g.NERDTreeHidden = 0
-
+-- 切换标签页
+for i = 1, 9 do
+  vim.api.nvim_set_keymap('n', '<leader>' .. i, ':tabn ' .. i .. '<CR>', { noremap = true, silent = true })
+end
 -- 自动打开 NERDTree
 vim.cmd([[
   autocmd vimenter * if !argc() | NERDTree | endif
@@ -121,25 +103,25 @@ vim.cmd([[
 
 -- 使用 // 注释风格
 vim.g.NERDCommenterCommentString = '// %s'
-
 -- 对 C 和 C++ 文件使用 // 注释
 vim.cmd('autocmd FileType c,cpp setlocal commentstring=//\\ %s')
 
--- 切换标签页
-for i = 1, 9 do
-  vim.api.nvim_set_keymap('n', '<leader>' .. i, ':tabn ' .. i .. '<CR>', { noremap = true, silent = true })
-end
-
--- 复制到系统剪贴板
+-- 键映射
+vim.api.nvim_set_keymap('n', '<ScrollWheelUp>', ':echo "Scroll up disabled"<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<ScrollWheelDown>', ':echo "Scroll down disabled"<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>y', '"+y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>Y', '"+yy', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
-
--- 粘贴系统剪贴板内容
 vim.api.nvim_set_keymap('n', '<leader>p', '"+p', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>P', '"+P', { noremap = true, silent = true })
-
--- 绑定 Ctrl+F 键进行文件搜索
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-F>', ':CtrlP<CR>', { noremap = true, silent = true })
+-- Move
+vim.api.nvim_set_keymap('x', '<A-Up>', ":move '<-2<CR>gv=gv", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-Up>', ":move .-2<CR>==", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('x', '<A-Down>', ":move '>+1<CR>gv=gv", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-Down>', ":move .+1<CR>==", { noremap = true, silent = true })
+
+
 --vim.cmd('colorscheme solarized')
 vim.cmd[[colorscheme onedark]]
