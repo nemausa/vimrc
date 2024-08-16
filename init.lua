@@ -136,3 +136,6 @@ vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true
 -- 粘贴系统剪贴板内容
 vim.api.nvim_set_keymap('n', '<leader>p', '"+p', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>P', '"+P', { noremap = true, silent = true })
+
+-- 绑定 Ctrl+F 键进行文件搜索
+vim.api.nvim_set_keymap('n', '<C-F>', ':CtrlP<CR>', { noremap = true, silent = true })
