@@ -28,6 +28,7 @@ require('packer').startup(function(use)
   use 'mileszs/ack.vim'
   use 'preservim/nerdtree'
   use 'altercation/vim-colors-solarized'
+  use 'joshdick/onedark.vim' -- One Dark color scheme
 end)
 
 if vim.fn.has('nvim-0.8') == 1 then
@@ -140,4 +141,5 @@ vim.api.nvim_set_keymap('n', '<leader>P', '"+P', { noremap = true, silent = true
 
 -- 绑定 Ctrl+F 键进行文件搜索
 vim.api.nvim_set_keymap('n', '<C-F>', ':CtrlP<CR>', { noremap = true, silent = true })
-vim.cmd('colorscheme solarized')
+--vim.cmd('colorscheme solarized')
+vim.cmd[[colorscheme onedark]]
