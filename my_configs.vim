@@ -14,12 +14,17 @@ call plug#end()
 filetype on
 filetype plugin on
 filetype indent on
+" 全局设置
+set expandtab       " 使用空格代替Tab
+set shiftwidth=4    " 缩进时使用4个空格
+set tabstop=4       " 一个Tab显示为4个空格
 set number
 set fileencodings=utf-8
 set guifont=Consolas:h14
 "set list
 set colorcolumn=80
 set mouse=
+
 :map <ScrollWheelUp> :echo "Scroll up disabled"<CR>
 :map <ScrollWheelDown> :echo "Scroll down disabled"<CR>
 "set listchars=space:.,tab:>-
@@ -41,11 +46,6 @@ let g:UltiSnipsJumpForwardTrigger="<Tab>"
 " 设置跳转到上一个字段的键
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
-
-" 全局设置
-set expandtab       " 使用空格代替Tab
-set shiftwidth=4    " 缩进时使用4个空格
-set tabstop=4       " 一个Tab显示为4个空格
 autocmd BufRead,BufNewFile *.cpp,*.h set filetype=cpp
 " 为 C/C++ 文件设置 Tab 长度为 4
 autocmd FileType c,cpp,h,java setlocal tabstop=2 shiftwidth=2 expandtab
@@ -79,6 +79,7 @@ map <leader>nn :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
 map <leader>z :A<cr>
+map <leader>s :copen<cr>
 "in visual mode
 xnoremap <A-Up> :m '<-2<CR>gv=gv
 "normal mode
@@ -89,10 +90,22 @@ nnoremap <A-Down> :m .+1<CR>==
 noremap <leader>y "+y
 noremap <leader>Y "+yy
 vnoremap <leader>y "+y
-
 " 粘贴系统剪贴板内容
 noremap <leader>p "+p
 noremap <leader>P "+P
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Switch to tab 1 with leader+1-9
+map <leader>1 :tabn 1<cr>
+map <leader>2 :tabn 2<cr>
+map <leader>3 :tabn 3<cr>
+map <leader>4 :tabn 4<cr>
+map <leader>5 :tabn 5<cr>
+map <leader>6 :tabn 6<cr>
+map <leader>7 :tabn 7<cr>
+map <leader>8 :tabn 8<cr>
+map <leader>9 :tabn 9<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "map <A-Up> :m-2<CR>
 "map <A-Down> :m+1<CR>
