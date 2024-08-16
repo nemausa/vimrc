@@ -29,10 +29,11 @@ require('packer').startup(function(use)
   use 'preservim/nerdtree'
 end)
 
--- 加载 filetype 插件
-vim.cmd('filetype on')
-vim.cmd('filetype plugin on')
-vim.cmd('filetype indent on')
+if vim.fn.has('nvim-0.8') == 1 then
+    vim.g.do_filetype_lua = 1
+    vim.g.did_load_filetypes = 0
+end
+
 
 -- 全局设置
 vim.opt.expandtab = true      -- 使用空格代替Tab
@@ -62,14 +63,14 @@ vim.g.UltiSnipsJumpForwardTrigger = '<Tab>'
 vim.g.UltiSnipsJumpBackwardTrigger = '<S-Tab>'
 
 -- 自动命令配置
-vim.cmd([[
-  autocmd BufRead,BufNewFile *.cpp,*.h set filetype=cpp
-  autocmd FileType c,cpp,h,java setlocal tabstop=2 shiftwidth=2 expandtab
-  autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
-  autocmd FileType make setlocal tabstop=8 shiftwidth=8 noexpandtab
-  autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 expandtab
-  autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab
-]])
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {"c", "cpp"},
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = true
+  end
+})
 
 -- LSP 配置
 vim.api.nvim_set_keymap('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', { expr = true, noremap = true, silent = true })
@@ -86,6 +87,15 @@ vim.api.nvim_set_keymap('n', '<leader>nb', ':NERDTreeFromBookmark<CR>', { norema
 vim.api.nvim_set_keymap('n', '<leader>nf', ':NERDTreeFind<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>z', ':A<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':copen<CR>', { noremap = true, silent = true })
+-- Visual mode: move selected lines up
+vim.api.nvim_set_keymap('x', '<A-Up>', ":move '<-2<CR>gv=gv", { noremap = true, silent = true })
+-- Normal mode: move the current line up
+vim.api.nvim_set_keymap('n', '<A-Up>', ":move .-2<CR>==", { noremap = true, silent = true })
+-- Visual mode: move selected lines down
+vim.api.nvim_set_keymap('x', '<A-Down>', ":move '>+1<CR>gv=gv", { noremap = true, silent = true })
+-- Normal mode: move the current line down
+vim.api.nvim_set_keymap('n', '<A-Down>', ":move .+1<CR>==", { noremap = true, silent = true })
+
 
 -- NERDTree 其他设置
 vim.g.NERDTreeDirArrowExpandable = '+'
