@@ -8,7 +8,7 @@
 " 请先确保已安装 Vim-Plug（参考：https://github.com/junegunn/vim-plug）
 " 以下是一个简单的插件示例
 
-ccall plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
@@ -23,12 +23,20 @@ Plug 'SirVer/ultisnips'
 Plug 'nemausa/friendly-snippets'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'RRethy/vim-hexokinase'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 " 禁用 Vi 兼容模式，启用 Vim 的增强功能
 set nocompatible
 set timeoutlen=1000
-set ttimeoutlen=10
+set ttimeoutlen=100
+set updatetime=300
+let g:airline_detect_modified = 0
+let g:airline_detect_spell = 0
+let g:airline_detect_paste = 0
+let g:UltiSnipsExpandTrigger="<C-l>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
 " 仅在特定文件类型下设置 UltiSnips 的 <CR> 映射
 let g:UltiSnipsSnippetDirectories = ['~/.vim/plugged/friendly-snippets']
@@ -36,7 +44,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : (UltiSnips#CanExpandSnippet() ? U
 set hidden
 
 " 设置 leader 键为空格
-let mapleader = " "
+let mapleader = ","
 
 " 使用空格代替 Tab，并设置缩进为 4 个空格
 set expandtab
@@ -144,14 +152,15 @@ nnoremap <F8> :TagbarToggle<CR>
 " 使用 Tab 和 Shift-Tab 在补全菜单中进行选择
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" : "\<Tab>"
+
 inoremap <silent><expr> <S-Tab>
       \ pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <silent><expr> <Tab>
+"       \ coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
 
+" inoremap <silent><expr> <S-Tab>
+"       \ coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
-""""""""""""""""""""""""""""""
-" => CTRL-P
-""""""""""""""""""""""""""""""
-let g:ctrlp_working_path_mode = 0
 
 """"""""""""""""""""""""""""""
 " => A.vim
@@ -165,12 +174,9 @@ nnoremap <M-o> :A<CR>
 """"""""""""""""""""""""""""""
 map <leader>cs :CtrlSpace<cr>
 
-
-" Quickly find and open a file in the current working directory
-let g:ctrlp_map = '<C-f>'
-map <leader>j :CtrlP<cr>
-
-" Quickly find and open a buffer
+""""""""""""""""""""""""""""""
+" => fzf.vim
+""""""""""""""""""""""""""""""
 nnoremap <leader>b :CtrlPBuffer<cr>
 nnoremap <C-p> :Files<CR>
 nnoremap <Leader>ff :Files<CR>
@@ -178,6 +184,7 @@ nnoremap <Leader>fg :GFiles<CR>
 nnoremap <Leader>fb :Buffers<CR>
 nnoremap <Leader>fl :Lines<CR>
 let $FZF_DEFAULT_OPTS = '--ignore-case'
+let $FZF_DEFAULT_COMMAND = 'find . -type f ! -path "*/build/*" ! -path "*/.git/*"'
 
 " 根据需要继续添加其他设置...
 let g:airline#extensions#tabline#enabled = 1
@@ -189,9 +196,10 @@ let g:airline#extensions#tabline#enabled = 1
 filetype plugin indent on
 colorscheme onedark
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => autocmd 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set autowriteall
 autocmd BufEnter * if &filetype == 'nerdtree' | inoremap <buffer> <CR> <CR> | endif
+autocmd FocusLost * silent! wa
+
