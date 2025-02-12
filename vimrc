@@ -55,43 +55,6 @@ filetype plugin indent on
 
 colorscheme onedark
 
-" ============================================================================
-" 自定义覆盖设置（确保在主题加载后执行）
-" ============================================================================
-" 利用 ColorScheme 自动命令，在加载 onedark 主题后覆盖特定高亮组
-" autocmd ColorScheme onedark call s:CustomOnedarkHighlights()
-
-" function! s:CustomOnedarkHighlights() abort
-"   " 设置基本颜色（可根据自己的需求微调）
-"   highlight Normal       guifg=#abb2bf guibg=#282c34
-"   highlight Comment      guifg=#5c6370 guibg=NONE
-"   highlight String       guifg=#98c379 guibg=NONE
-"   highlight Number       guifg=#d19a66 guibg=NONE
-
-"   " 设置函数和关键字等颜色
-"   highlight Function     guifg=#61afef guibg=NONE
-"   highlight Keyword      guifg=#c678dd guibg=NONE
-"   highlight Type         guifg=#e5c07b guibg=NONE
-
-"   " 标识符和运算符（保持前景色）
-"   highlight Identifier   guifg=#abb2bf guibg=NONE
-"   highlight Operator     guifg=#abb2bf guibg=NONE
-
-"   " 预处理指令（如 C/C++ 中的 #include 等）
-"   highlight PreProc      guifg=#e5c07b guibg=NONE
-
-"   " 类、枚举及相关变体
-"   highlight Class        guifg=#e5c07b guibg=NONE
-"   highlight CClass       guifg=#e5c07b guibg=NONE
-"   highlight CPPClass     guifg=#e5c07b guibg=NONE
-"   highlight CppClass     guifg=#e5c07b guibg=NONE
-"   highlight Enum         guifg=#e5c07b guibg=NONE
-
-"   " 如果 C 文件中函数相关区域显示为 cPreConditMatch，
-"   " 则将其链接到 Function 组（或直接设置颜色）
-"   hi! link cPreConditMatch Function
-" endfunction
-
 " 仅在特定文件类型下设置 UltiSnips 的 <CR> 映射
 let g:UltiSnipsSnippetDirectories = ['~/.vim/plugged/friendly-snippets']
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : (UltiSnips#CanExpandSnippet() ? UltiSnips#ExpandSnippet() : "\<CR>")
