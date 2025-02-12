@@ -8,28 +8,32 @@
 " 请先确保已安装 Vim-Plug（参考：https://github.com/junegunn/vim-plug）
 " 以下是一个简单的插件示例
 
-call plug#begin('~/.vim/plugged')
-" 示例插件：文件浏览器
+ccall plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdtree'
-" 示例插件：Git 状态显示
 Plug 'airblade/vim-gitgutter'
-" 示例插件：代码大纲导航
 Plug 'majutsushi/tagbar'
-" 示例插件：代码自动补全（你可以根据需求添加其他插件）
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-scripts/a.vim'
-
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'SirVer/ultisnips'
+Plug 'nemausa/friendly-snippets'
+Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'RRethy/vim-hexokinase'
 call plug#end()
 
 " 禁用 Vi 兼容模式，启用 Vim 的增强功能
 set nocompatible
+set timeoutlen=1000
+set ttimeoutlen=10
 
-" 关闭文件类型检测，稍后手动开启
-filetype off
+" 仅在特定文件类型下设置 UltiSnips 的 <CR> 映射
+let g:UltiSnipsSnippetDirectories = ['~/.vim/plugged/friendly-snippets']
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : (UltiSnips#CanExpandSnippet() ? UltiSnips#ExpandSnippet() : "\<CR>")
+set hidden
 
 " 设置 leader 键为空格
 let mapleader = " "
@@ -47,7 +51,7 @@ set relativenumber
 set clipboard=unnamedplus
 
 " 开启真彩色支持（适用于终端支持真彩色的情况）
-set termguicolors
+ set termguicolors
 
 " 搜索时忽略大小写，但遇到大写时启用智能匹配
 set ignorecase
@@ -81,10 +85,6 @@ endif
 " 文件类型、插件和缩进
 " ============================================================================
 
-" 开启文件类型检测、插件和缩进支持
-filetype plugin indent on
-
-
 " ============================================================================
 " 插件及其他扩展设置
 " ============================================================================
@@ -112,7 +112,6 @@ inoremap kk <Esc>
 nnoremap <leader>w <C-w>w
 nnoremap gd <C-]>
 
-
 " ============================================================================
 " 其他个性化设置
 " ============================================================================
@@ -127,6 +126,8 @@ let g:NERDTreeWinSize=35
 map <leader>nn :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark<Space>
 map <leader>nf :NERDTreeFind<cr>
+nnoremap <silent> <leader>e :NERDTreeFocus<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => TagBar 
@@ -138,15 +139,14 @@ nnoremap <leader>tt :TagbarToggle<CR>
 nnoremap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => MarkdownPreview 
+" => Coc 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>mp : MarkdownPreview<CR>
+" 使用 Tab 和 Shift-Tab 在补全菜单中进行选择
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr> <S-Tab>
+      \ pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => OneDark 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme onedark
 
 """"""""""""""""""""""""""""""
 " => CTRL-P
@@ -160,17 +160,38 @@ nnoremap <leader>z :A<CR>
 nnoremap <A-o> :A<CR>
 nnoremap <M-o> :A<CR>
 
+""""""""""""""""""""""""""""""
+" => ctrlspace.vim
+""""""""""""""""""""""""""""""
+map <leader>cs :CtrlSpace<cr>
+
 
 " Quickly find and open a file in the current working directory
 let g:ctrlp_map = '<C-f>'
 map <leader>j :CtrlP<cr>
 
 " Quickly find and open a buffer
-map <leader>b :CtrlPBuffer<cr>
-
-let g:ctrlp_max_height = 20
-let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <C-p> :Files<CR>
+nnoremap <Leader>ff :Files<CR>
+nnoremap <Leader>fg :GFiles<CR>
+nnoremap <Leader>fb :Buffers<CR>
+nnoremap <Leader>fl :Lines<CR>
+let $FZF_DEFAULT_OPTS = '--ignore-case'
 
 " 根据需要继续添加其他设置...
 let g:airline#extensions#tabline#enabled = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => OneDark 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" syntax_on
+filetype plugin indent on
+colorscheme onedark
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => autocmd 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set autowriteall
+autocmd BufEnter * if &filetype == 'nerdtree' | inoremap <buffer> <CR> <CR> | endif
