@@ -24,6 +24,7 @@ Plug 'nemausa/friendly-snippets'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'RRethy/vim-hexokinase'
 Plug 'tpope/vim-commentary'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " 禁用 Vi 兼容模式，启用 Vim 的增强功能
@@ -31,12 +32,65 @@ set nocompatible
 set timeoutlen=1000
 set ttimeoutlen=100
 set updatetime=300
+set autoread
+autocmd FocusGained,BufEnter * checktime
 let g:airline_detect_modified = 0
 let g:airline_detect_spell = 0
 let g:airline_detect_paste = 0
 let g:UltiSnipsExpandTrigger="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => OneDark 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" syntax_on
+filetype plugin indent on
+" ============================================================================
+" 加载 onedark 主题
+" ============================================================================
+" 如有需要，可以在这里设置 onedark 插件的选项，例如：
+" let g:onedark_style = 'dark'      " 可选 'dark' 或 'light'（默认：dark）
+" let g:onedark_transparent = 0     " 是否使用透明背景（0 为不透明，1 为透明）
+
+colorscheme onedark
+
+" ============================================================================
+" 自定义覆盖设置（确保在主题加载后执行）
+" ============================================================================
+" 利用 ColorScheme 自动命令，在加载 onedark 主题后覆盖特定高亮组
+" autocmd ColorScheme onedark call s:CustomOnedarkHighlights()
+
+" function! s:CustomOnedarkHighlights() abort
+"   " 设置基本颜色（可根据自己的需求微调）
+"   highlight Normal       guifg=#abb2bf guibg=#282c34
+"   highlight Comment      guifg=#5c6370 guibg=NONE
+"   highlight String       guifg=#98c379 guibg=NONE
+"   highlight Number       guifg=#d19a66 guibg=NONE
+
+"   " 设置函数和关键字等颜色
+"   highlight Function     guifg=#61afef guibg=NONE
+"   highlight Keyword      guifg=#c678dd guibg=NONE
+"   highlight Type         guifg=#e5c07b guibg=NONE
+
+"   " 标识符和运算符（保持前景色）
+"   highlight Identifier   guifg=#abb2bf guibg=NONE
+"   highlight Operator     guifg=#abb2bf guibg=NONE
+
+"   " 预处理指令（如 C/C++ 中的 #include 等）
+"   highlight PreProc      guifg=#e5c07b guibg=NONE
+
+"   " 类、枚举及相关变体
+"   highlight Class        guifg=#e5c07b guibg=NONE
+"   highlight CClass       guifg=#e5c07b guibg=NONE
+"   highlight CPPClass     guifg=#e5c07b guibg=NONE
+"   highlight CppClass     guifg=#e5c07b guibg=NONE
+"   highlight Enum         guifg=#e5c07b guibg=NONE
+
+"   " 如果 C 文件中函数相关区域显示为 cPreConditMatch，
+"   " 则将其链接到 Function 组（或直接设置颜色）
+"   hi! link cPreConditMatch Function
+" endfunction
 
 " 仅在特定文件类型下设置 UltiSnips 的 <CR> 映射
 let g:UltiSnipsSnippetDirectories = ['~/.vim/plugged/friendly-snippets']
@@ -128,7 +182,7 @@ nnoremap gd <C-]>
 " => Nerd Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:NERDTreeWinPos = "left"
-let NERDTreeShowHidden=0
+let NERDTreeShowHidden=1
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
 map <leader>nn :NERDTreeToggle<cr>
@@ -150,17 +204,14 @@ nnoremap <F8> :TagbarToggle<CR>
 " => Coc 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 使用 Tab 和 Shift-Tab 在补全菜单中进行选择
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" : "\<Tab>"
+" 1. 使用 pumvisible() 检查补全菜单的可见性（第一组映射）
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>    pumvisible() ? coc#_select_confirm() : "\<CR>"
 
-inoremap <silent><expr> <S-Tab>
-      \ pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <silent><expr> <Tab>
-"       \ coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
-
-" inoremap <silent><expr> <S-Tab>
-"       \ coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
-
+" 2. 使用 coc#pum#visible() 检查 coc 补全菜单的可见性（第二组映射）
+inoremap <expr> <Tab>   coc#pum#visible() ? coc#pum#next(1)   : "\<Tab>"
+inoremap <expr> <CR>    coc#pum#visible() ? coc#pum#confirm()   : "\<CR>"
 
 """"""""""""""""""""""""""""""
 " => A.vim
@@ -190,16 +241,34 @@ let $FZF_DEFAULT_COMMAND = 'find . -type f ! -path "*/build/*" ! -path "*/.git/*
 let g:airline#extensions#tabline#enabled = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => OneDark 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" syntax_on
-filetype plugin indent on
-colorscheme onedark
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => autocmd 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set autowriteall
 autocmd BufEnter * if &filetype == 'nerdtree' | inoremap <buffer> <CR> <CR> | endif
 autocmd FocusLost * silent! wa
+function! ToggleTabSize()
+    if &tabstop == 4
+        " 当前为 4 个空格，切换到 2 个空格
+        setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+        echo "Tab size set to 2"
+    else
+        " 切换回 4 个空格
+        setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
+        echo "Tab size set to 4"
+    endif
+endfunction
 
+" 映射 leader+st 键来切换 tab 宽度
+nnoremap <leader>st :call ToggleTabSize()<CR>
+nnoremap <leader>cf :w<CR>:call system("clang-format -i " . shellescape(expand('%:p')))<CR>:edit!<CR>:redraw!<CR>
+
+" Ctags
+let g:gutentags_ctags_exclude = ['.git', 'node_modules', 'build']
+function! BuildCtags()
+    let cwd = getcwd()
+    let cmd = "ctags -R --exclude=output --exclude=linux-5.10 --languages=C,C++ --fields=+l+K --extra=+q --c-kinds=+p+f+g+u+s+e+m+t+v " . cwd
+    let result = system(cmd)
+    echo result
+endfunction
+" 在普通模式下，按 <leader>ct 执行 :Ctags 命令
+nnoremap <leader>ct :call BuildCtags()<CR>
