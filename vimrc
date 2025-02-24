@@ -28,8 +28,10 @@ Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " 禁用 Vi 兼容模式，启用 Vim 的增强功能
+nnoremap <silent> <Space> <Nop>
+vnoremap <silent> <Space> <Nop>
 set nocompatible
-set timeoutlen=1000
+set timeoutlen=500
 set ttimeoutlen=100
 set updatetime=300
 set autoread
@@ -61,7 +63,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : (UltiSnips#CanExpandSnippet() ? U
 set hidden
 
 " 设置 leader 键为空格
-let mapleader = ","
+let mapleader = " "
 
 " 使用空格代替 Tab，并设置缩进为 4 个空格
 set expandtab
@@ -182,6 +184,9 @@ inoremap <expr> <CR>    coc#pum#visible() ? coc#pum#confirm()   : "\<CR>"
 nnoremap <leader>z :A<CR>
 nnoremap <A-o> :A<CR>
 nnoremap <M-o> :A<CR>
+silent! iunmap <Space>ihn
+silent! iunmap <Space>is
+silent! iunmap <Space>ih
 
 """"""""""""""""""""""""""""""
 " => ctrlspace.vim
